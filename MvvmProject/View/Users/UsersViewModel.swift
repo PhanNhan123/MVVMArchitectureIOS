@@ -1,29 +1,25 @@
 import Foundation
 import RxSwift
 
-final class UserViewModel: BaseViewModel {
-    let user: UserModel!
-    
+final class UsersViewModel : BaseViewModel{
     let inReload = PublishSubject<Void>()
+    let outUsers = PublishSubject<[UserModel]>()
     
-    let outUser = PublishSubject<UserModel>()
-    init(user: UserModel?){
-        self.user = user
+    override init(){
         super.init()
-        
         inReload.subscribe(onNext: {() in
-            self.loadUser()
+            self.loadUsers()
         }).disposed(by: disposeBag)
     }
-    private func loadUser(){
+    private func loadUsers(){
         loading(true)
-        UserRepository.shared.getUser(login: user.login!)
+        UserRepository.shared.getUsers(since: "")
             .observeOn(MainScheduler.instance)
             .subscribe(
-                onNext :{ [weak self] user in
-                self?.outUser.onNext(user)
+                onNext : {[weak self] users in
+                    self?.outUsers.onNext(users)
                 },
-                onError: {[weak self] error in
+                onError : {[weak self] error in
                     self?.loading(false)
                     self?.alert(error.localizedDescription)
                 },
@@ -33,4 +29,3 @@ final class UserViewModel: BaseViewModel {
             ).disposed(by: disposeBag)
     }
 }
-

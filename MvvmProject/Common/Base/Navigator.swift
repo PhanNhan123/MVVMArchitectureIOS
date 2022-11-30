@@ -11,7 +11,7 @@ class Navigator{
         if toRoot {
             sender?.navigationController?.popToRootViewController(animated: true)
         }else{
-            sender?.navigationController?.popViewController()
+            sender?.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -35,3 +35,4 @@ class Navigator{
         UIApplication.shared.open(url.url!, options: [:], completionHandler: nil)
     }
 }
+

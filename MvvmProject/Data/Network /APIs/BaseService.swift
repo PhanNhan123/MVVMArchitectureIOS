@@ -4,6 +4,7 @@ import Alamofire
 
 class BaseService {
     private static let baseURL = Environment.baseUrl
+     
     private let queue = DispatchQueue(label: "BaseService.NetWork.Queue")
     
     private let headers: HTTPHeaders = [
